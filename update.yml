@@ -1,0 +1,31 @@
+name: Auto Update TWSE Market Data
+
+on:
+  schedule:
+    # 每日台北時間 15:00 執行 (國際標準時 UTC 為 07:00)
+    - cron: '00 7 * * 1-5'
+  workflow_dispatch: # 允許你隨時手動點擊按鈕更新
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-level: '3.10'
+
+      - name: Run Crawler Script
+        run: |
+          python3 scripts/update_market_data.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "actions@github.com"
+          git add data/market_data.json
+          git diff-index --quiet HEAD || git commit -m "Auto-update market data (UTC: $(date))"
+          git push
