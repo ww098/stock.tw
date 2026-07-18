@@ -9,11 +9,11 @@ from pathlib import Path
 from statistics import mean
 from urllib.request import Request, urlopen
 
+# 改為相對於本腳本的路徑，支援專案放在任何地方
 ROOT = Path(__file__).resolve().parents[1]
 WATCHLIST = ROOT / "data" / "watchlist.json"
 OUTPUT = ROOT / "data" / "market_data.json"
 API = "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date={date}&stockNo={code}"
-
 
 def fetch_history(code: str) -> list[dict]:
     date = datetime.now().strftime("%Y%m01")
@@ -32,10 +32,8 @@ def fetch_history(code: str) -> list[dict]:
         raise RuntimeError(f"{code}: not enough trading days")
     return rows
 
-
 def pct(start: float, end: float) -> float:
     return round((end / start - 1) * 100, 2)
-
 
 def summarize(stock: dict) -> dict:
     rows = fetch_history(stock["code"])
@@ -44,7 +42,6 @@ def summarize(stock: dict) -> dict:
     previous = rows[-2]
     trend = [{"date": row["date"], "return": pct(baseline["close"], row["close"])} for row in rows[-5:]]
     return {**stock, "close": latest["close"], "as_of": latest["date"], "week_return": pct(baseline["close"], latest["close"]), "day_return": pct(previous["close"], latest["close"]), "trend": trend}
-
 
 def main() -> int:
     watchlist = json.loads(WATCHLIST.read_text(encoding="utf-8"))
@@ -71,7 +68,6 @@ def main() -> int:
     OUTPUT.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Updated {OUTPUT} for {as_of}; {len(failures)} symbols unavailable.")
     return 0
-
 
 if __name__ == "__main__":
     try:

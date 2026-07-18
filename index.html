@@ -13,9 +13,9 @@
       <h1>台股產業趨勢儀表板</h1>
       <p id="as-of">載入市場資料中…</p>
     </div>
-    <div class="header-actions">
-      <button id="toggle-panel" type="button" style="background: var(--line); color: var(--text); margin-right: 10px;">管理觀察名單</button>
-      <button id="reload" type="button">重新載入資料</button>
+    <div style="display: flex; gap: 10px;">
+      <button id="toggle-panel" type="button" style="background: var(--surface); border: 1px solid var(--line); color: var(--text);">管理名單</button>
+      <button id="reload" type="button">重新載入</button>
     </div>
   </header>
   
@@ -26,8 +26,9 @@
           <p class="eyebrow">WATCHLIST MANAGER</p>
           <h2>新增監測股票</h2>
         </div>
+        <p style="font-size:12px">此功能須透過本機伺服器 (server.py) 執行</p>
       </div>
-      <form id="add-stock-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto; gap: 15px; align-items: end; margin-top: 15px;">
+      <form id="add-stock-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto; gap: 15px; align-items: end; margin-top: 15px;">
         <div>
           <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:5px;">板塊名稱（現有或新產業）</label>
           <input type="text" id="input-group" placeholder="例如：半導體 或 新星科技" required style="width:100%; padding:10px; background:var(--bg); border:1px solid var(--line); color:var(--text); border-radius:6px;">
@@ -73,7 +74,6 @@
         </div>
         <div id="trend" class="trend" aria-label="本週累積報酬率趨勢"></div>
       </article>
-      
       <article class="panel">
         <div class="section-heading">
           <div>
@@ -84,8 +84,18 @@
         </div>
         <div id="holdings" class="holdings"></div>
       </article>
+    </section>
     
-    <section class="panel"><div class="section-heading"><div><p class="eyebrow">BENCHMARKS</p><h2>基準 ETF</h2></div><p>不納入板塊排名</p></div><div id="benchmarks" class="benchmark-grid"></div></section>
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">BENCHMARKS</p>
+          <h2>基準 ETF</h2>
+        </div>
+        <p>不納入板塊排名</p>
+      </div>
+      <div id="benchmarks" class="benchmark-grid"></div>
+    </section>
   </main>
   <footer>資料來源：臺灣證券交易所每日成交資訊。僅供資料整理，不構成投資建議。</footer>
   <script src="app.js"></script>
